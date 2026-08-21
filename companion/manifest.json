@@ -1,7 +1,7 @@
 {
 	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
 	"type": "connection",
-	"id": "companion-module-atlona-omega",
+	"id": "atlona-omega",
 	"name": "companion-module-atlona-omega",
 	"shortname": "omega",
 	"description": "Atlona Omega Matrix Switchers",
