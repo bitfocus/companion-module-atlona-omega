@@ -5,7 +5,7 @@
 	"name": "companion-module-atlona-omega",
 	"shortname": "omega",
 	"description": "Atlona Omega Matrix Switchers",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-atlona-omega.git",
 	"bugs": "https://github.com/bitfocus/companion-module-atlona-omega/issues",
