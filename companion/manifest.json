@@ -1,0 +1,28 @@
+{
+	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+	"type": "connection",
+	"id": "companion-module-atlona-omega",
+	"name": "companion-module-atlona-omega",
+	"shortname": "omega",
+	"description": "Atlona Omega Matrix Switchers",
+	"version": "1.0.0",
+	"license": "MIT",
+	"repository": "git+https://github.com/bitfocus/companion-module-atlona-omega.git",
+	"bugs": "https://github.com/bitfocus/companion-module-atlona-omega/issues",
+	"maintainers": [
+		{
+			"name": "Jacob Chapman",
+			"email": "jacob@chapmansound.com"
+		}
+	],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../dist/main.js"
+	},
+	"legacyIds": [],
+	"manufacturer": "Atlona",
+	"products": ["Omega Matrix Switchers"],
+	"keywords": []
+}
