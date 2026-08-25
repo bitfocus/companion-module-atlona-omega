@@ -2,10 +2,10 @@
 	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
 	"type": "connection",
 	"id": "atlona-omega",
-	"name": "companion-module-atlona-omega",
+	"name": "atlona-omega",
 	"shortname": "omega",
 	"description": "Atlona Omega Matrix Switchers",
-	"version": "1.0.3",
+	"version": "0.0.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-atlona-omega.git",
 	"bugs": "https://github.com/bitfocus/companion-module-atlona-omega/issues",
@@ -24,5 +24,5 @@
 	"legacyIds": [],
 	"manufacturer": "Atlona",
 	"products": ["Omega Matrix Switchers"],
-	"keywords": []
+	"keywords": ["Switchers", "Video"]
 }

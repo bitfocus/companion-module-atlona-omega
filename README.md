@@ -9,6 +9,7 @@ See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 ## To-Do
 - Define feedback for XY routing, USB logic, etc
 - Generate presets for most often used buttons
+- Integrate RS-232 passthru controls for external devices (e.g. Projector over HDBaseT port 9001), with associated command RS232zone 
 
 ## Possible To-Do's?
 - Create a dropdown to allow selection from multiple OME models (SW-32 for starters), and show/hide actions based on selection
@@ -17,6 +18,4 @@ See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
   - IPDHCP
   - IPStatic
   - Mreset
-  - RepCmdTime
-  - RepeatCmd
-  - RS232zone
+  - (RS-232) RepCmd, RepeatCmdTime

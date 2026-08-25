@@ -13,6 +13,14 @@ export type ModuleSecrets = {
 export function GetConfigFields(): SomeCompanionConfigField[] {
 	return [
 		{
+			type: 'static-text',
+			id: 'info',
+			label: 'Device Configuration',
+			value:
+				'Enter the Atlona device IP address and Telnet port. The default Telnet port is `23`. The login credentials are the same as those used to connect to the Atlona Web UI. The device must have Telnet Login Mode enabled from the Web UI, and must be reachable from the Companion host. If "Telnet Timeout" is enabled, the connection to the Companion Host will expire and must be manually reconnected.',
+			width: 12,
+		},
+		{
 			type: 'textinput',
 			id: 'host',
 			label: 'Target IP',
