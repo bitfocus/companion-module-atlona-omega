@@ -64,7 +64,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 					name: 'Power & Debugging Tools',
 					description: 'System commands and tools for troubleshooting',
 					type: 'simple',
-					presets: ['reboot', 'pwon', 'pwoff', 'blink', 'get-var'],
+					presets: ['reboot', 'lock', 'unlock', 'pwon', 'pwoff', 'blink', 'get-var'],
 				},
 			],
 		},
@@ -442,11 +442,55 @@ export function UpdatePresets(self: ModuleInstance): void {
 		],
 	}
 
+	presets['lock'] = {
+		name: 'Lock the Front Panel',
+		type: 'simple',
+		style: {
+			text: 'Lock Panel',
+			size: '18',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'lock',
+						options: {},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+	presets['unlock'] = {
+		name: 'Unlock the Front Panel',
+		type: 'simple',
+		style: {
+			text: 'Unlock Panel',
+			size: '18',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'unlock',
+						options: {},
+					},
+				],
+				up: [],
+			},
+		],
+	}
 	presets['pwon'] = {
 		name: 'Power On the Device',
 		type: 'simple',
 		style: {
-			text: 'Power On',
+			text: 'Power ON',
 			size: '18',
 			color: 0xffffff,
 			bgcolor: 0x000000,
@@ -469,7 +513,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		name: 'Power Off the Device',
 		type: 'simple',
 		style: {
-			text: 'Power Off',
+			text: 'Power OFF',
 			size: '18',
 			color: 0xffffff,
 			bgcolor: 0x000000,
