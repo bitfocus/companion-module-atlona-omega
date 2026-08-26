@@ -7,11 +7,12 @@ If there is a specific action or feature you'd like to see implemented, please p
 See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
 ## To-Do
+
 - Define feedback for XY routing, USB logic, etc
-- Generate presets for most often used buttons
-- Integrate RS-232 passthru controls for external devices (e.g. Projector over HDBaseT port 9001), with associated command RS232zone 
+- Integrate RS-232 passthru controls for external devices (e.g. Projector over HDBaseT port 9001), with associated command RS232zone
 
 ## Possible To-Do's?
+
 - Create a dropdown to allow selection from multiple OME models (SW-32 for starters), and show/hide actions based on selection
 - Advanced actions/commands
   - IP802.1x

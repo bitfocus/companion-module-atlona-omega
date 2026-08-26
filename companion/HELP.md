@@ -52,6 +52,6 @@ RS-232 control is not currently supported.
 - Check the Companion log for authentication or connection errors.
 - Run the relevant `Get ... Status` action to refresh a variable manually.
 
-# Feedbacks and Presets
+# Feedbacks
 
-Feedbacks and presets are not currently implemented.
+Feedbacks are not currently implemented.
