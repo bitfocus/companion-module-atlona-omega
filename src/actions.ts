@@ -455,13 +455,13 @@ export function UpdateActions(self: ModuleInstance): void {
 				const command = action.options.cmd
 				if (command === 'on') {
 					self.log('info', 'Sending RS232 Command [C00]')
-					self.sendCommand('RS232zone[C00]')
+					self.sendCommand('RS232zone[C00\x0D]')
 					return
 				}
 
 				if (command === 'off') {
 					self.log('info', 'Sending RS232 Command [C01]')
-					self.sendCommand('RS232zone[C01]')
+					self.sendCommand('RS232zone[C01\x0D]')
 					return
 				}
 			},
