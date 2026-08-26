@@ -1,4 +1,4 @@
-## Companion Module for Atlona Omega Series Matrix Switchers
+# Companion Module for Atlona Omega Series Matrix Switchers
 
 This Companion Module has been developed to control the Atlona Omega series of matrix switchers and scalers. As of version 1.0, the actions correspond to the commands listed in the [Atlona AT-OME-MS42 API](https://ts.atlona.com/pdf/AT-OME-MS42_API.pdf). Note that other Atlona devices may use similar commands, though compatibilty has not been tested and cannot be verified for all models.
 
@@ -6,12 +6,15 @@ If there is a specific action or feature you'd like to see implemented, please p
 
 See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
-## To-Do
-- Define feedback for XY routing, USB logic, etc
-- Generate presets for most often used buttons
-- Integrate RS-232 passthru controls for external devices (e.g. Projector over HDBaseT port 9001), with associated command RS232zone 
+## Active To-Do's
 
-## Possible To-Do's?
+- Define feedback for XY routing, USB logic, etc
+- Integrate RS-232 passthru controls for external devices (e.g. Projector over HDBaseT port 9001), with associated command RS232zone
+- Auto-reconnect, auto-status polling
+- Invert VOUTMute1/2 variables to be more consistent with LRAUD Status
+
+## Long Term To-Do's
+
 - Create a dropdown to allow selection from multiple OME models (SW-32 for starters), and show/hide actions based on selection
 - Advanced actions/commands
   - IP802.1x
