@@ -436,6 +436,8 @@ export function UpdateActions(self: ModuleInstance): void {
 			},
 		},
 
+		// Defined 'on'/'off' commands below work on an Eiki EK-620U projector.
+		// Implement an arbitrary "send raw command" field instead for broader compatibility.
 		RS232zone: {
 			name: 'Send RS232 Command',
 			description: 'Sends an RS232 Command to the HDBaseT Remote Connection.',
