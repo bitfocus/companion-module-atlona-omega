@@ -38,6 +38,7 @@ export function UpdateFeedbacks(self: ModuleInstance): void {
 					return false
 				}
 			},
-		}, */
+		},
+		*/
 	})
 }
