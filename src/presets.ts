@@ -77,7 +77,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'Input $(local:input) to HDMI Out',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -121,7 +121,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'Input $(local:input) to HDBaseT Out',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -154,7 +154,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'USB Host: Follow USB',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -179,7 +179,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'USB Host: Follow Video',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -204,7 +204,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'USB Host: USB-C',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -236,7 +236,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'USB Host: USB 1',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -268,7 +268,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'USB Host: USB 2',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -300,7 +300,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'USB Host: HDBaseT',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -332,7 +332,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'Enable HDMI Out',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -355,7 +355,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'Disable HDMI Out',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -378,7 +378,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'Enable HDBaseT Out',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
@@ -401,7 +401,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		type: 'simple',
 		style: {
 			text: 'Disable HDBaseT Out',
-			size: '18',
+			size: '14',
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},

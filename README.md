@@ -10,6 +10,8 @@ See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
 - Define feedback for XY routing, USB logic, etc
 - Integrate RS-232 passthru controls for external devices (e.g. Projector over HDBaseT port 9001), with associated command RS232zone
+- Auto-reconnect, auto-status polling
+- chore: invert VOUTMute1/2 variables to be more consistent with LRAUD Status
 
 ## Possible To-Do's?
 
