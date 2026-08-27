@@ -11,7 +11,7 @@ export type ActionsSchema = {
 	pwon: { options: Record<string, never> }
 	pwoff: { options: Record<string, never> }
 	reboot: { options: Record<string, never> }
-	RS232zone: { options: { cmd: 'on' | 'off' } }
+	RS232zone: { options: { command: string } }
 	unlock: { options: Record<string, never> }
 	USBHostLogic: { options: { mode: 'follow usb' | 'follow video' | 'manual' } }
 	USBHostRoute: { options: { mode: 'C' | '1' | '2' | '3' } }
@@ -436,35 +436,24 @@ export function UpdateActions(self: ModuleInstance): void {
 			},
 		},
 
-		// Defined 'on'/'off' commands below work on an Eiki EK-620U projector.
-		// Implement an arbitrary "send raw command" field instead for broader compatibility.
 		RS232zone: {
 			name: 'Send RS232 Command',
 			description: 'Sends an RS232 Command to the HDBaseT Remote Connection.',
 			options: [
 				{
-					id: 'cmd',
-					type: 'dropdown',
+					id: 'command',
+					type: 'textinput',
 					label: 'Command',
-					default: 'on',
-					choices: [
-						{ id: 'on', label: 'Power On' },
-						{ id: 'off', label: 'Power Off' },
-					],
+					default: '',
 				},
 			],
 			callback: async (action) => {
-				const command = action.options.cmd
-				if (command === 'on') {
-					self.log('info', 'Sending RS232 Command [C00]')
-					self.sendCommand('RS232zone[C00\x0D]')
-					return
-				}
-
-				if (command === 'off') {
-					self.log('info', 'Sending RS232 Command [C01]')
-					self.sendCommand('RS232zone[C01\x0D]')
-					return
+				try {
+					const cmd = action.options.command
+					self.log('info', `Sending RS232 Command [${cmd}]`)
+					self.sendCommand(`RS232zone[${cmd}]`)
+				} catch (err: any) {
+					self.log('error', `Failed to send RS-232 command: ${err?.message ?? err}`)
 				}
 			},
 		},

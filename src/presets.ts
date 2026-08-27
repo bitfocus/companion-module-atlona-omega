@@ -22,7 +22,6 @@ export function UpdatePresets(self: ModuleInstance): void {
 						{ name: `Input 4 (HDMI 4) to Output 1 (HDMI)`, value: '4' },
 					],
 				},
-
 				{
 					id: `route-hdbaset`,
 					name: `Route Input to Output 2 (HDBaseT)`,
@@ -37,7 +36,6 @@ export function UpdatePresets(self: ModuleInstance): void {
 						{ name: `Input 4 (HDMI 4) to Output 2 (HDBaseT)`, value: '4' },
 					],
 				},
-
 				{
 					id: 'usbhost',
 					name: 'USB Host Route',
@@ -65,6 +63,13 @@ export function UpdatePresets(self: ModuleInstance): void {
 					description: 'System commands and tools for troubleshooting',
 					type: 'simple',
 					presets: ['reboot', 'lock', 'unlock', 'pwon', 'pwoff', 'blink', 'get-var'],
+				},
+				{
+					id: 'rs232',
+					name: 'Send RS-232 Commands Over HDBaseT',
+					description: 'NOTE: Generic commands will vary depending on receiving device.',
+					type: 'simple',
+					presets: ['eiki-on', 'eiki-off', 'epson-on', 'epson-off'],
 				},
 			],
 		},
@@ -464,6 +469,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 			},
 		],
 	}
+
 	presets['unlock'] = {
 		name: 'Unlock the Front Panel',
 		type: 'simple',
@@ -486,6 +492,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 			},
 		],
 	}
+
 	presets['pwon'] = {
 		name: 'Power On the Device',
 		type: 'simple',
@@ -620,6 +627,106 @@ export function UpdatePresets(self: ModuleInstance): void {
 					{
 						actionId: 'xY$_status',
 						options: {},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['eiki-on'] = {
+		name: 'Send command [C00] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Eiki\nPower\nON',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'C00\x0D',
+						},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['eiki-off'] = {
+		name: 'Send command [C01] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Eiki\nPower\nOFF',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'C01\x0D',
+						},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['epson-on'] = {
+		name: 'Send command [PWR ON] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Epson\nPower\nON',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'PWR ON\x0D',
+						},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['epson-off'] = {
+		name: 'Send command [PWR OFF] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Epson\nPower\nOFF',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'PWR OFF\x0D',
+						},
 					},
 				],
 				up: [],
