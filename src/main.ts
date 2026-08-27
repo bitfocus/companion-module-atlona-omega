@@ -338,6 +338,14 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 				statusVOUTMute2: `${varVOUTMute2}`,
 			})
 			this.log('info', 'Initial status query complete, variables updated.')
+
+			// eslint-disable-next-line prettier/prettier
+			this.checkFeedbacks(
+				'fbkInput1',
+				'fbkInput2',
+				'fbkInput3',
+				'fbkInput4',
+			)
 		} catch (err: any) {
 			this.log('error', `Failed to retrieve initial status: ${err?.message ?? err}`)
 		}

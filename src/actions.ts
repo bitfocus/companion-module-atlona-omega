@@ -223,12 +223,22 @@ export function UpdateActions(self: ModuleInstance): void {
 						self.log('info', `Input ${i + 1} (${names[idx]}) is ${connected ? 'connected.' : 'not connected.'}`)
 					}
 
+					const input1Connected = bits.charAt(0) === '1' ? 'connected' : 'not-connected'
+					const input2Connected = bits.charAt(1) === '1' ? 'connected' : 'not-connected'
+					const input3Connected = bits.charAt(2) === '1' ? 'connected' : 'not-connected'
+					const input4Connected = bits.charAt(3) === '1' ? 'connected' : 'not-connected'
+
 					self.setVariableValues({
-						input1Connected: bits.charAt(0) === '1' ? 'connected' : 'not-connected',
-						input2Connected: bits.charAt(1) === '1' ? 'connected' : 'not-connected',
-						input3Connected: bits.charAt(2) === '1' ? 'connected' : 'not-connected',
-						input4Connected: bits.charAt(3) === '1' ? 'connected' : 'not-connected',
+						input1Connected,
+						input2Connected,
+						input3Connected,
+						input4Connected,
 					} as Partial<VariablesSchema>)
+
+					// eslint-disable-next-line prettier/prettier
+					self.checkFeedbacks(
+						'fbkInput1', 'fbkInput2', 'fbkInput3', 'fbkInput4',
+					)
 				} catch (err: any) {
 					self.log('error', `Failed to retrieve input status: ${err?.message ?? err}`)
 				}
