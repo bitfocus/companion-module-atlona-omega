@@ -2,6 +2,9 @@ import type { ModuleSchema } from './main.js'
 import type ModuleInstance from './main.js'
 import type { CompanionPresetDefinitions, CompanionPresetSection } from '@companion-module/base'
 
+type HexColor = string
+const hexToNumber = (value: HexColor): number => Number.parseInt(value.slice(1), 16)
+
 export function UpdatePresets(self: ModuleInstance): void {
 	const structure: CompanionPresetSection[] = [
 		{
@@ -22,7 +25,6 @@ export function UpdatePresets(self: ModuleInstance): void {
 						{ name: `Input 4 (HDMI 4) to Output 1 (HDMI)`, value: '4' },
 					],
 				},
-
 				{
 					id: `route-hdbaset`,
 					name: `Route Input to Output 2 (HDBaseT)`,
@@ -37,7 +39,6 @@ export function UpdatePresets(self: ModuleInstance): void {
 						{ name: `Input 4 (HDMI 4) to Output 2 (HDBaseT)`, value: '4' },
 					],
 				},
-
 				{
 					id: 'usbhost',
 					name: 'USB Host Route',
@@ -66,6 +67,13 @@ export function UpdatePresets(self: ModuleInstance): void {
 					type: 'simple',
 					presets: ['reboot', 'lock', 'unlock', 'pwon', 'pwoff', 'blink', 'get-var'],
 				},
+				{
+					id: 'rs232',
+					name: 'Send RS-232 Commands Over HDBaseT',
+					description: 'NOTE: Generic commands will vary depending on receiving device.',
+					type: 'simple',
+					presets: ['eiki-on', 'eiki-off', 'epson-on', 'epson-off'],
+				},
 			],
 		},
 	]
@@ -82,16 +90,34 @@ export function UpdatePresets(self: ModuleInstance): void {
 			bgcolor: 0x000000,
 		},
 		feedbacks: [
-			/*
 			{
-				feedbackId: 'blink',
+				feedbackId: 'fbkRoutedOut1',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
 				style: {
-					bgcolor: 0xff0000,
-					color: 0xffffff,
+					bgcolor: hexToNumber('#990000'),
+					color: hexToNumber('#FFFFFF'),
 				},
-				options: { mode: 'toggle' },
 			},
-			*/
+			{
+				feedbackId: 'fbkInputNotConnected',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Input $(local:input) not connected',
+					size: 'auto',
+				},
+			},
+			{
+				feedbackId: 'fbkOutputDisabled',
+				options: { output: { isExpression: true, value: '$(local:output)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Output $(local:output) disabled',
+					size: 'auto',
+				},
+			},
 		],
 		steps: [
 			{
@@ -113,6 +139,11 @@ export function UpdatePresets(self: ModuleInstance): void {
 				variableName: 'input',
 				startupValue: 0,
 			},
+			{
+				variableType: 'simple',
+				variableName: 'output',
+				startupValue: '1',
+			},
 		],
 	}
 
@@ -125,7 +156,36 @@ export function UpdatePresets(self: ModuleInstance): void {
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
-		feedbacks: [],
+		feedbacks: [
+			{
+				feedbackId: 'fbkRoutedOut2',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
+				style: {
+					bgcolor: hexToNumber('#000066'),
+					color: hexToNumber('#FFFFFF'),
+				},
+			},
+			{
+				feedbackId: 'fbkInputNotConnected',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Input $(local:input) not connected',
+					size: 'auto',
+				},
+			},
+			{
+				feedbackId: 'fbkOutputDisabled',
+				options: { output: { isExpression: true, value: '$(local:output)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Output $(local:output) disabled',
+					size: 'auto',
+				},
+			},
+		],
 		steps: [
 			{
 				down: [
@@ -145,6 +205,11 @@ export function UpdatePresets(self: ModuleInstance): void {
 				variableType: 'simple',
 				variableName: 'input',
 				startupValue: 0,
+			},
+			{
+				variableType: 'simple',
+				variableName: 'output',
+				startupValue: '2',
 			},
 		],
 	}
@@ -464,6 +529,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 			},
 		],
 	}
+
 	presets['unlock'] = {
 		name: 'Unlock the Front Panel',
 		type: 'simple',
@@ -486,6 +552,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 			},
 		],
 	}
+
 	presets['pwon'] = {
 		name: 'Power On the Device',
 		type: 'simple',
@@ -620,6 +687,110 @@ export function UpdatePresets(self: ModuleInstance): void {
 					{
 						actionId: 'xY$_status',
 						options: {},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['eiki-on'] = {
+		name: 'Send command [C00] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Eiki\nPower\nON',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'C00',
+							lineEnding: `\x0D`,
+						},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['eiki-off'] = {
+		name: 'Send command [C01] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Eiki\nPower\nOFF',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'C01',
+							lineEnding: `\x0D`,
+						},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['epson-on'] = {
+		name: 'Send command [PWR ON] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Epson\nPower\nON',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'PWR ON',
+							lineEnding: `\x0D`,
+						},
+					},
+				],
+				up: [],
+			},
+		],
+	}
+
+	presets['epson-off'] = {
+		name: 'Send command [PWR OFF] followed by a CR',
+		type: 'simple',
+		style: {
+			text: 'Epson\nPower\nOFF',
+			size: '14',
+			color: 0xffffff,
+			bgcolor: 0x000000,
+		},
+		feedbacks: [],
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'RS232zone',
+						options: {
+							command: 'PWR OFF',
+							lineEnding: '\x0D',
+						},
 					},
 				],
 				up: [],

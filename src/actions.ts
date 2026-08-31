@@ -11,6 +11,7 @@ export type ActionsSchema = {
 	pwon: { options: Record<string, never> }
 	pwoff: { options: Record<string, never> }
 	reboot: { options: Record<string, never> }
+	RS232zone: { options: { command: string; lineEnding: '\x0D' | '\x0A' | '\x0D\x0A' } }
 	unlock: { options: Record<string, never> }
 	USBHostLogic: { options: { mode: 'follow usb' | 'follow video' | 'manual' } }
 	USBHostRoute: { options: { mode: 'C' | '1' | '2' | '3' } }
@@ -222,12 +223,22 @@ export function UpdateActions(self: ModuleInstance): void {
 						self.log('info', `Input ${i + 1} (${names[idx]}) is ${connected ? 'connected.' : 'not connected.'}`)
 					}
 
+					const input1Connected = bits.charAt(0) === '1' ? 'connected' : 'not-connected'
+					const input2Connected = bits.charAt(1) === '1' ? 'connected' : 'not-connected'
+					const input3Connected = bits.charAt(2) === '1' ? 'connected' : 'not-connected'
+					const input4Connected = bits.charAt(3) === '1' ? 'connected' : 'not-connected'
+
 					self.setVariableValues({
-						input1Connected: bits.charAt(0) === '1' ? 'connected' : 'not-connected',
-						input2Connected: bits.charAt(1) === '1' ? 'connected' : 'not-connected',
-						input3Connected: bits.charAt(2) === '1' ? 'connected' : 'not-connected',
-						input4Connected: bits.charAt(3) === '1' ? 'connected' : 'not-connected',
+						input1Connected,
+						input2Connected,
+						input3Connected,
+						input4Connected,
 					} as Partial<VariablesSchema>)
+
+					// eslint-disable-next-line prettier/prettier
+					self.checkFeedbacks(
+						'fbkInputNotConnected',
+					)
 				} catch (err: any) {
 					self.log('error', `Failed to retrieve input status: ${err?.message ?? err}`)
 				}
@@ -264,17 +275,23 @@ export function UpdateActions(self: ModuleInstance): void {
 				},
 			],
 			callback: async (action) => {
-				const mode = action.options.mode
-				if (mode === 'on') {
-					self.log('info', 'Analog audio output set to ON')
-					self.sendCommand('LRAUD on')
-					return
-				}
+				try {
+					const mode = action.options.mode
+					if (mode === 'on') {
+						self.log('info', 'Analog audio output set to ON')
+						self.sendCommand('LRAUD on')
+						self.setVariableValues({ statusAudioOutAnalog: 'on' } as Partial<VariablesSchema>)
+						return
+					}
 
-				if (mode === 'off') {
-					self.log('info', 'Analog audio output set to OFF')
-					self.sendCommand('LRAUD off')
-					return
+					if (mode === 'off') {
+						self.log('info', 'Analog audio output set to OFF')
+						self.sendCommand('LRAUD off')
+						self.setVariableValues({ statusAudioOutAnalog: 'off' } as Partial<VariablesSchema>)
+						return
+					}
+				} catch (err: any) {
+					self.log('error', `Failed to set analog audio output mode: ${err?.message ?? err}`)
 				}
 			},
 		},
@@ -294,10 +311,10 @@ export function UpdateActions(self: ModuleInstance): void {
 
 					if (status === 'LRAUD on') {
 						self.log('info', 'Analog audio output status is on.')
-						self.setVariableValues({ statusLRAUD: 'on' } as Partial<VariablesSchema>)
+						self.setVariableValues({ statusAudioOutAnalog: 'on' } as Partial<VariablesSchema>)
 					} else if (status === 'LRAUD off') {
 						self.log('info', 'Analog audio output status is off.')
-						self.setVariableValues({ statusLRAUD: 'off' } as Partial<VariablesSchema>)
+						self.setVariableValues({ statusAudioOutAnalog: 'off' } as Partial<VariablesSchema>)
 					} else {
 						self.log('warn', `Unexpected analog audio output response: ${line}`)
 					}
@@ -431,6 +448,40 @@ export function UpdateActions(self: ModuleInstance): void {
 					self.log('info', 'Rebooting the unit')
 				} catch (err: any) {
 					self.log('error', `Failed to reboot the unit: ${err?.message ?? err}`)
+				}
+			},
+		},
+
+		RS232zone: {
+			name: 'Send RS232 Command',
+			description: 'Sends an RS232 Command to the HDBaseT Remote Connection.',
+			options: [
+				{
+					id: 'command',
+					type: 'textinput',
+					label: 'Command',
+					default: '',
+				},
+				{
+					id: 'lineEnding',
+					type: 'dropdown',
+					label: 'Line Ending',
+					choices: [
+						{ id: '\x0D', label: 'CR' },
+						{ id: '\x0A', label: 'LF' },
+						{ id: '\x0D\x0A', label: 'CR+LF' },
+					],
+					default: '\x0D',
+				},
+			],
+			callback: async (action) => {
+				try {
+					const cmd = action.options.command
+					const eol = action.options.lineEnding
+					self.log('info', `Sending RS232 Command [${cmd}] followed by a CR`)
+					self.sendCommand(`RS232zone[${cmd}${eol}]`)
+				} catch (err: any) {
+					self.log('error', `Failed to send RS-232 command: ${err?.message ?? err}`)
 				}
 			},
 		},
@@ -709,9 +760,11 @@ export function UpdateActions(self: ModuleInstance): void {
 			},
 		},
 
+		// NOTE: these labels are inverted to be consistent with LRAUD behavior,
+		// as the Atlona API returns a boolean for Mute/Unmute rather than On/Off.
 		VOUTMute: {
-			name: 'Output Audio Mute',
-			description: 'Mutes/unmutes the audio output for the HDMI or HDBaseT outputs.',
+			name: 'HDMI/HDBaseT Audio Outputs',
+			description: 'Enables or disables the audio output for the HDMI or HDBaseT outputs.',
 			options: [
 				{
 					id: 'output',
@@ -729,8 +782,8 @@ export function UpdateActions(self: ModuleInstance): void {
 					label: 'State',
 					default: 'on',
 					choices: [
-						{ id: 'on', label: 'Mute' },
-						{ id: 'off', label: 'Unmute' },
+						{ id: 'off', label: 'On' },
+						{ id: 'on', label: 'Off' },
 					],
 				},
 			],
@@ -747,7 +800,7 @@ export function UpdateActions(self: ModuleInstance): void {
 					self.sendCommand(`VOUTMute${output} ${mode}`)
 					self.setVariableValues({ [`statusVOUTMute${output}`]: mode } as Partial<VariablesSchema>)
 				} catch (err: any) {
-					self.log('error', `Failed to set audio output mute: ${err?.message ?? err}`)
+					self.log('error', `Failed to set HDMI/HDBaseT audio output mode: ${err?.message ?? err}`)
 				}
 			},
 		},
@@ -755,7 +808,7 @@ export function UpdateActions(self: ModuleInstance): void {
 		VOUTMute_status: {
 			name: 'Get Output Volume Mute Status',
 			sortName: 'zzz Get Output Volume Mute Status',
-			description: 'Displays the output volume mute status',
+			description: 'Displays the status of the HDMI and HDBaseT audio outputs',
 			options: [],
 			callback: async () => {
 				try {
@@ -765,14 +818,14 @@ export function UpdateActions(self: ModuleInstance): void {
 					const line1 = await (self as any).waitForLine(/^(VOUTMute1 on|VOUTMute1 off)$/i, 3000)
 					const status1 = line1.trim()
 
-					if (status1 === 'VOUTMute1 on') {
-						self.log('info', 'Output 1 volume mute status: MUTED')
-						self.setVariableValues({ statusVOUTMute1: 'on' } as Partial<VariablesSchema>)
-					} else if (status1 === 'VOUTMute1 off') {
-						self.log('info', 'Output 1 volume mute status: UNMUTED')
-						self.setVariableValues({ statusVOUTMute1: 'off' } as Partial<VariablesSchema>)
+					if (status1 === 'VOUTMute1 off') {
+						self.log('info', 'HDMI audio output status is on.')
+						self.setVariableValues({ statusAudioOutHDMI: 'on' } as Partial<VariablesSchema>)
+					} else if (status1 === 'VOUTMute1 on') {
+						self.log('info', 'HDMI audio output status is off.')
+						self.setVariableValues({ statusAudioOutHDMI: 'off' } as Partial<VariablesSchema>)
 					} else {
-						self.log('warn', `Unexpected VOUTMute1 status response: ${line1}`)
+						self.log('warn', `Unexpected HDMI audio output response: ${line1}`)
 					}
 
 					self.sendCommand('VOUTMute2 sta')
@@ -780,14 +833,14 @@ export function UpdateActions(self: ModuleInstance): void {
 					const line2 = await (self as any).waitForLine(/^(VOUTMute2 on|VOUTMute2 off)$/i, 3000)
 					const status2 = line2.trim()
 
-					if (status2 === 'VOUTMute2 on') {
-						self.log('info', 'Output 2 volume mute status: MUTED')
-						self.setVariableValues({ statusVOUTMute2: 'on' } as Partial<VariablesSchema>)
-					} else if (status2 === 'VOUTMute2 off') {
-						self.log('info', 'Output 2 volume mute status: UNMUTED')
-						self.setVariableValues({ statusVOUTMute2: 'off' } as Partial<VariablesSchema>)
+					if (status2 === 'VOUTMute2 off') {
+						self.log('info', 'HDBaseT audio output status is on.')
+						self.setVariableValues({ statusAudioOutHDBaseT: 'on' } as Partial<VariablesSchema>)
+					} else if (status2 === 'VOUTMute2 on') {
+						self.log('info', 'HDBaseT audio output status is off.')
+						self.setVariableValues({ statusAudioOutHDBaseT: 'off' } as Partial<VariablesSchema>)
 					} else {
-						self.log('warn', `Unexpected VOUTMute2 status response: ${line2}`)
+						self.log('warn', `Unexpected HDBaseT audio output response: ${line2}`)
 					}
 				} catch (err: any) {
 					self.log('error', `Failed to retrieve VOUTMute status: ${err?.message ?? err}`)
@@ -796,7 +849,7 @@ export function UpdateActions(self: ModuleInstance): void {
 		},
 
 		xY$: {
-			name: 'xY$',
+			name: 'Output Enable/Disable',
 			description: 'Enables/disables video for the specified output.',
 			options: [
 				{
@@ -838,7 +891,7 @@ export function UpdateActions(self: ModuleInstance): void {
 		},
 
 		xY$_status: {
-			name: 'Get output enablement status',
+			name: 'Get Output Enablement Status',
 			sortName: 'zzz Get Output Enablement Status',
 			description: 'Retrieves whether Outputs 1 and 2 are enabled',
 			options: [],

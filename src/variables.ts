@@ -9,14 +9,14 @@ export type VariablesSchema = {
 	output2Enabled: string
 	routeOutput1: string
 	routeOutput2: string
+	statusAudioOutAnalog: string
+	statusAudioOutHDMI: string
+	statusAudioOutHDBaseT: string
 	statusBlink: string
-	statusLRAUD: string
 	statusPower: string
 	statusUsbHostLogic: string
 	statusUsbHostRoute: string
 	statusUsbVbusControl: string
-	statusVOUTMute1: string
-	statusVOUTMute2: string
 	type: string
 	version: string
 }
@@ -31,14 +31,14 @@ export function UpdateVariableDefinitions(self: ModuleInstance): void {
 		output2Enabled: { name: 'Output 2 Enable Status' },
 		routeOutput1: { name: 'Output 1 Route Status' },
 		routeOutput2: { name: 'Output 2 Route Status' },
+		statusAudioOutAnalog: { name: 'Analog Audio Output status' },
+		statusAudioOutHDMI: { name: 'HDMI Audio Output status' },
+		statusAudioOutHDBaseT: { name: 'HDBaseT Audio Output status' },
 		statusBlink: { name: 'Blink status' },
-		statusLRAUD: { name: 'Analog Audio Output status' },
 		statusPower: { name: 'Power status' },
 		statusUsbHostLogic: { name: 'USB Host Logic status' },
 		statusUsbHostRoute: { name: 'USB Host Route status' },
 		statusUsbVbusControl: { name: 'USB VBus Power status' },
-		statusVOUTMute1: { name: 'HDMI Audio Output status' },
-		statusVOUTMute2: { name: 'HDBaseT Audio Output status' },
 		type: { name: 'Model of the unit' },
 		version: { name: 'Current firmware version of the unit' },
 	})

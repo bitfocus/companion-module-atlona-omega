@@ -2,13 +2,13 @@
 
 This module lets Bitfocus Companion control supported Atlona Omega devices over Telnet. Use it to remotely manage power, signal routing, output contols, and USB host settings.
 
-# Configuration and Login
+## Configuration and Login
 
-Enter the Atlona device IP address and Telnet port. The default Telnet port is `23`. The login credentials are the same as those used to connect to the Atlona Web UI.
+Enter the Atlona device's IP address and Telnet port. The default Telnet port is `23`. The login credentials are the same as those used to connect to the Atlona Web UI. If you have Telnet Login Mode disabled from the Web UI (not recommended, for obvious reasons) the authentication sequence is bypassed, thus login credentials can be left blank.
 
-The device must have Telnet Login Mode enabled from the Web UI, and must be reachable from the Companion host. If "Telnet Timeout" is enabled, the connection to the Companion Host will expire and must be manually reconnected.
+If "Telnet Timeout" is enabled, the connection to the Companion Host will expire and must be manually reconnected.
 
-# Actions
+## Actions
 
 The module provides actions for the following commands from the Atlona API:
 
@@ -21,7 +21,7 @@ The module provides actions for the following commands from the Atlona API:
 
 Actions named `Get ... Status` are intended for manually refreshing variables or troubleshooting. Status variables are also populated automatically when the connection is established.
 
-# Variables
+## Variables
 
 The module exposes variables for:
 
@@ -37,21 +37,22 @@ The module exposes variables for:
 
 Variables are updated during initial connection and when the corresponding action (or `Get ... Status` action) is run.
 
-# Supported Devices
+Input connection status, XY routing, and output enable status variables can be called using feedback to dynamically change the style of any button.
 
-Commands have been tested with the Atlona AT-OME-MS42. Other Atlona Omega series devices may work but have not been verified.
+## Supported Devices
 
-RS-232 control is not currently supported.
+All actions have been tested with the Atlona AT-OME-MS42. Other Atlona Omega series devices may work but have not been verified; please check the API for your specific device to see if the commands match.
 
-# Troubleshooting
+If you would like to request a specific model for integration in a future release, please submit a request [here](https://github.com/bitfocus/companion-module-atlona-omega/issues) and attach a PDF of that model's current API document to the request.
+
+RS-232 commands can be sent over HDBaseT to a remote device by using the "Send RS-232 Command" action. Configuration of serial baud rate, parity, etc. must be done in the Atlona Web UI for this action to function correctly. Please refer to the remote device's documentation for details on RS-232 setup and accepted commands. A line-ending character must be specified (either a carriage return, line feed, or both).
+
+## Troubleshooting
 
 - Confirm the IP address and Telnet port.
-- Confirm that Telnet Login Mode is enabled on the device.
+- Confirm the username and password are correct (if Telnet Login Mode is enabled on the device).
 - Confirm that the Companion host can reach the device on the configured port.
-- Verify the username and password against the Atlona Web UI.
 - Check the Companion log for authentication or connection errors.
 - Run the relevant `Get ... Status` action to refresh a variable manually.
 
-# Feedbacks
-
-Feedbacks are not currently implemented.
+If something is still not working, please file a bug report [here](https://github.com/bitfocus/companion-module-atlona-omega/issues).
