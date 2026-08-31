@@ -841,7 +841,7 @@ export function UpdateActions(self: ModuleInstance): void {
 		},
 
 		xY$: {
-			name: 'xY$',
+			name: 'Output Enable/Disable',
 			description: 'Enables/disables video for the specified output.',
 			options: [
 				{
@@ -883,7 +883,7 @@ export function UpdateActions(self: ModuleInstance): void {
 		},
 
 		xY$_status: {
-			name: 'Get output enablement status',
+			name: 'Get Output Enablement Status',
 			sortName: 'zzz Get Output Enablement Status',
 			description: 'Retrieves whether Outputs 1 and 2 are enabled',
 			options: [],
