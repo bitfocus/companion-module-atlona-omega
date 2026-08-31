@@ -311,9 +311,9 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 			const replyVOUTMute2 = queryVOUTMute2.trim()
 
 			if (replyVOUTMute2 === 'VOUTMute2 on') {
-				varVOUTMute2 = 'on'
-			} else if (replyVOUTMute2 === 'VOUTMute2 off') {
 				varVOUTMute2 = 'off'
+			} else if (replyVOUTMute2 === 'VOUTMute2 off') {
+				varVOUTMute2 = 'on'
 			} else {
 				this.log('warn', `Unexpected analog audio output response: ${queryVOUTMute2}`)
 			}
