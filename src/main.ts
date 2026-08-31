@@ -341,10 +341,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 
 			// eslint-disable-next-line prettier/prettier
 			this.checkFeedbacks(
-				'fbkInput1',
-				'fbkInput2',
-				'fbkInput3',
-				'fbkInput4',
+				'fbkInputNotConnected',
 			)
 		} catch (err: any) {
 			this.log('error', `Failed to retrieve initial status: ${err?.message ?? err}`)

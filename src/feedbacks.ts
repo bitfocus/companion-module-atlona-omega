@@ -1,65 +1,146 @@
 import type ModuleInstance from './main.js'
 
+type HexColor = string
+const hexToNumber = (value: HexColor): number => Number.parseInt(value.slice(1), 16)
+
 export type FeedbacksSchema = {
-	fbkInput1: {
+	fbkRoutedOut1: {
 		type: 'boolean'
-		options: Record<string, never>
+		options: { input: { input: '1' | '2' | '3' | '4' } }
 	}
-	fbkInput2: {
+	fbkRoutedOut2: {
 		type: 'boolean'
-		options: Record<string, never>
+		options: { input: { input: '1' | '2' | '3' | '4' } }
 	}
-	fbkInput3: {
+	fbkInputNotConnected: {
 		type: 'boolean'
-		options: Record<string, never>
+		options: { input: { input: '1' | '2' | '3' | '4' } }
 	}
-	fbkInput4: {
+	fbkOutputDisabled: {
 		type: 'boolean'
-		options: Record<string, never>
+		options: { output: { output: '1' | '2' } }
 	}
 }
 
 export function UpdateFeedbacks(self: ModuleInstance): void {
 	self.setFeedbackDefinitions({
-		fbkInput1: {
-			name: 'Input 1 Connected',
+		fbkRoutedOut1: {
 			type: 'boolean',
+			name: 'Input Routed to Output 1 (HDMI)',
 			defaultStyle: {
-				bgcolor: 0xff0000,
-				color: 0x000000,
+				bgcolor: hexToNumber('#FF0000'),
+				color: hexToNumber('#000000'),
+				text: 'Input is routed to Output 1 (HDMI)',
+				size: 'auto',
 			},
-			options: [],
-			callback: () => self.getVariableValue('input1Connected') === 'connected',
+			options: [
+				{
+					id: 'input',
+					type: 'dropdown',
+					label: 'Input',
+					default: '1',
+					choices: [
+						{ id: '1', label: 'Input 1 (USB-C)' },
+						{ id: '2', label: 'Input 2 (DisplayPort)' },
+						{ id: '3', label: 'Input 3 (HDMI 3)' },
+						{ id: '4', label: 'Input 4 (HDMI 4)' },
+					],
+				},
+			],
+			callback: (feedback) => {
+				const input = feedback.options.input
+
+				// eslint-disable-next-line @typescript-eslint/no-base-to-string
+				return self.getVariableValue('routeOutput1') === `${input}`
+			},
 		},
-		fbkInput2: {
-			name: 'Input 2 Connected',
+		fbkRoutedOut2: {
 			type: 'boolean',
+			name: 'Input Routed to Output 2 (HDBaseT)',
 			defaultStyle: {
-				bgcolor: 0xff0000,
-				color: 0x000000,
+				bgcolor: hexToNumber('#FF0000'),
+				color: hexToNumber('#000000'),
+				text: 'Input is routed to Output 2 (HDBaseT)',
+				size: 'auto',
 			},
-			options: [],
-			callback: () => self.getVariableValue('input2Connected') === 'connected',
+			options: [
+				{
+					id: 'input',
+					type: 'dropdown',
+					label: 'Input',
+					default: '1',
+					choices: [
+						{ id: '1', label: 'Input 1 (USB-C)' },
+						{ id: '2', label: 'Input 2 (DisplayPort)' },
+						{ id: '3', label: 'Input 3 (HDMI 3)' },
+						{ id: '4', label: 'Input 4 (HDMI 4)' },
+					],
+				},
+			],
+			callback: (feedback) => {
+				const input = feedback.options.input
+
+				// eslint-disable-next-line @typescript-eslint/no-base-to-string
+				return self.getVariableValue('routeOutput2') === `${input}`
+			},
 		},
-		fbkInput3: {
-			name: 'Input 3 Connected',
+		fbkInputNotConnected: {
 			type: 'boolean',
+			name: 'Input is Not Connected',
 			defaultStyle: {
-				bgcolor: 0xff0000,
-				color: 0x000000,
+				bgcolor: hexToNumber('#242424'),
+				color: hexToNumber('#B6B6B6'),
+				text: 'Input is not connected',
+				size: 'auto',
 			},
-			options: [],
-			callback: () => self.getVariableValue('input3Connected') === 'connected',
+			options: [
+				{
+					id: 'input',
+					type: 'dropdown',
+					label: 'Input',
+					default: '1',
+					choices: [
+						{ id: '1', label: 'Input 1 (USB-C)' },
+						{ id: '2', label: 'Input 2 (DisplayPort)' },
+						{ id: '3', label: 'Input 3 (HDMI 3)' },
+						{ id: '4', label: 'Input 4 (HDMI 4)' },
+					],
+				},
+			],
+			callback: (feedback) => {
+				const input = feedback.options.input
+
+				// eslint-disable-next-line @typescript-eslint/no-base-to-string
+				return self.getVariableValue(`input${input}Connected`) !== 'connected'
+			},
 		},
-		fbkInput4: {
-			name: 'Input 4 Connected',
+		fbkOutputDisabled: {
 			type: 'boolean',
+			name: 'Output is disabled',
 			defaultStyle: {
-				bgcolor: 0xff0000,
-				color: 0x000000,
+				bgcolor: hexToNumber('#242424'),
+				color: hexToNumber('#B6B6B6'),
+				text: 'Output is disabled.',
+				size: 'auto',
 			},
-			options: [],
-			callback: () => self.getVariableValue('input4Connected') === 'connected',
+			options: [
+				{
+					id: 'output',
+					type: 'dropdown',
+					label: 'Output',
+					default: '1',
+					choices: [
+						{ id: '1', label: 'Output 1 (HDMI)' },
+						{ id: '2', label: 'Output 2 (HDBaseT)' },
+					],
+				},
+			],
+			callback: (feedback) => {
+				const output = feedback.options.output
+
+				// eslint-disable-next-line @typescript-eslint/no-base-to-string
+				return self.getVariableValue(`output${output}Enabled`) !== 'on'
+			},
 		},
 	})
 }

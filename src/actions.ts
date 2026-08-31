@@ -11,7 +11,7 @@ export type ActionsSchema = {
 	pwon: { options: Record<string, never> }
 	pwoff: { options: Record<string, never> }
 	reboot: { options: Record<string, never> }
-	RS232zone: { options: { command: string } }
+	RS232zone: { options: { command: string; lineEnding: '\x0D' | '\x0A' | '\x0D\x0A' } }
 	unlock: { options: Record<string, never> }
 	USBHostLogic: { options: { mode: 'follow usb' | 'follow video' | 'manual' } }
 	USBHostRoute: { options: { mode: 'C' | '1' | '2' | '3' } }
@@ -237,7 +237,7 @@ export function UpdateActions(self: ModuleInstance): void {
 
 					// eslint-disable-next-line prettier/prettier
 					self.checkFeedbacks(
-						'fbkInput1', 'fbkInput2', 'fbkInput3', 'fbkInput4',
+						'fbkInputNotConnected',
 					)
 				} catch (err: any) {
 					self.log('error', `Failed to retrieve input status: ${err?.message ?? err}`)
@@ -456,12 +456,24 @@ export function UpdateActions(self: ModuleInstance): void {
 					label: 'Command',
 					default: '',
 				},
+				{
+					id: 'lineEnding',
+					type: 'dropdown',
+					label: 'Line Ending',
+					choices: [
+						{ id: '\x0D', label: 'CR' },
+						{ id: '\x0A', label: 'LF' },
+						{ id: '\x0D\x0A', label: 'CR+LF' },
+					],
+					default: '\x0D',
+				},
 			],
 			callback: async (action) => {
 				try {
 					const cmd = action.options.command
-					self.log('info', `Sending RS232 Command [${cmd}]`)
-					self.sendCommand(`RS232zone[${cmd}]`)
+					const eol = action.options.lineEnding
+					self.log('info', `Sending RS232 Command [${cmd}] followed by a CR`)
+					self.sendCommand(`RS232zone[${cmd}${eol}]`)
 				} catch (err: any) {
 					self.log('error', `Failed to send RS-232 command: ${err?.message ?? err}`)
 				}

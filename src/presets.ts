@@ -2,6 +2,9 @@ import type { ModuleSchema } from './main.js'
 import type ModuleInstance from './main.js'
 import type { CompanionPresetDefinitions, CompanionPresetSection } from '@companion-module/base'
 
+type HexColor = string
+const hexToNumber = (value: HexColor): number => Number.parseInt(value.slice(1), 16)
+
 export function UpdatePresets(self: ModuleInstance): void {
 	const structure: CompanionPresetSection[] = [
 		{
@@ -87,16 +90,34 @@ export function UpdatePresets(self: ModuleInstance): void {
 			bgcolor: 0x000000,
 		},
 		feedbacks: [
-			/*
 			{
-				feedbackId: 'blink',
+				feedbackId: 'fbkRoutedOut1',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
 				style: {
-					bgcolor: 0xff0000,
-					color: 0xffffff,
+					bgcolor: hexToNumber('#FF0000'),
+					color: hexToNumber('#000000'),
 				},
-				options: { mode: 'toggle' },
 			},
-			*/
+			{
+				feedbackId: 'fbkInputNotConnected',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Input $(local:input)\nnot connected',
+					size: 'auto',
+				},
+			},
+			{
+				feedbackId: 'fbkOutputDisabled',
+				options: { output: { isExpression: true, value: '$(local:output)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Output $(local:output)\ndisabled',
+					size: 'auto',
+				},
+			},
 		],
 		steps: [
 			{
@@ -118,6 +139,11 @@ export function UpdatePresets(self: ModuleInstance): void {
 				variableName: 'input',
 				startupValue: 0,
 			},
+			{
+				variableType: 'simple',
+				variableName: 'output',
+				startupValue: '1',
+			},
 		],
 	}
 
@@ -130,7 +156,36 @@ export function UpdatePresets(self: ModuleInstance): void {
 			color: 0xffffff,
 			bgcolor: 0x000000,
 		},
-		feedbacks: [],
+		feedbacks: [
+			{
+				feedbackId: 'fbkRoutedOut2',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
+				style: {
+					bgcolor: hexToNumber('#FF0000'),
+					color: hexToNumber('#000000'),
+				},
+			},
+			{
+				feedbackId: 'fbkInputNotConnected',
+				options: { input: { isExpression: true, value: '$(local:input)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Input $(local:input)\nnot connected',
+					size: 'auto',
+				},
+			},
+			{
+				feedbackId: 'fbkOutputDisabled',
+				options: { output: { isExpression: true, value: '$(local:output)' } },
+				style: {
+					bgcolor: hexToNumber('#242424'),
+					color: hexToNumber('#B6B6B6'),
+					text: 'Output $(local:output)\ndisabled',
+					size: 'auto',
+				},
+			},
+		],
 		steps: [
 			{
 				down: [
@@ -150,6 +205,11 @@ export function UpdatePresets(self: ModuleInstance): void {
 				variableType: 'simple',
 				variableName: 'input',
 				startupValue: 0,
+			},
+			{
+				variableType: 'simple',
+				variableName: 'output',
+				startupValue: '2',
 			},
 		],
 	}
@@ -650,7 +710,8 @@ export function UpdatePresets(self: ModuleInstance): void {
 					{
 						actionId: 'RS232zone',
 						options: {
-							command: 'C00\x0D',
+							command: 'C00',
+							lineEnding: `\x0D`,
 						},
 					},
 				],
@@ -675,7 +736,8 @@ export function UpdatePresets(self: ModuleInstance): void {
 					{
 						actionId: 'RS232zone',
 						options: {
-							command: 'C01\x0D',
+							command: 'C01',
+							lineEnding: `\x0D`,
 						},
 					},
 				],
@@ -700,7 +762,8 @@ export function UpdatePresets(self: ModuleInstance): void {
 					{
 						actionId: 'RS232zone',
 						options: {
-							command: 'PWR ON\x0D',
+							command: 'PWR ON',
+							lineEnding: `\x0D`,
 						},
 					},
 				],
@@ -725,7 +788,8 @@ export function UpdatePresets(self: ModuleInstance): void {
 					{
 						actionId: 'RS232zone',
 						options: {
-							command: 'PWR OFF\x0D',
+							command: 'PWR OFF',
+							lineEnding: '\x0D',
 						},
 					},
 				],
