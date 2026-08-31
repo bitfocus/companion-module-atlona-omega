@@ -28,8 +28,8 @@ export function UpdateFeedbacks(self: ModuleInstance): void {
 			type: 'boolean',
 			name: 'Input Routed to Output 1 (HDMI)',
 			defaultStyle: {
-				bgcolor: hexToNumber('#FF0000'),
-				color: hexToNumber('#000000'),
+				bgcolor: hexToNumber('#990000'),
+				color: hexToNumber('#FFFFFF'),
 				text: 'Input is routed to Output 1 (HDMI)',
 				size: 'auto',
 			},
@@ -58,8 +58,8 @@ export function UpdateFeedbacks(self: ModuleInstance): void {
 			type: 'boolean',
 			name: 'Input Routed to Output 2 (HDBaseT)',
 			defaultStyle: {
-				bgcolor: hexToNumber('#FF0000'),
-				color: hexToNumber('#000000'),
+				bgcolor: hexToNumber('#000066'),
+				color: hexToNumber('#FFFFFF'),
 				text: 'Input is routed to Output 2 (HDBaseT)',
 				size: 'auto',
 			},

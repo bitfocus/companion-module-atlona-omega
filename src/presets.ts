@@ -94,8 +94,8 @@ export function UpdatePresets(self: ModuleInstance): void {
 				feedbackId: 'fbkRoutedOut1',
 				options: { input: { isExpression: true, value: '$(local:input)' } },
 				style: {
-					bgcolor: hexToNumber('#FF0000'),
-					color: hexToNumber('#000000'),
+					bgcolor: hexToNumber('#990000'),
+					color: hexToNumber('#FFFFFF'),
 				},
 			},
 			{
@@ -104,7 +104,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 				style: {
 					bgcolor: hexToNumber('#242424'),
 					color: hexToNumber('#B6B6B6'),
-					text: 'Input $(local:input)\nnot connected',
+					text: 'Input $(local:input) not connected',
 					size: 'auto',
 				},
 			},
@@ -114,7 +114,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 				style: {
 					bgcolor: hexToNumber('#242424'),
 					color: hexToNumber('#B6B6B6'),
-					text: 'Output $(local:output)\ndisabled',
+					text: 'Output $(local:output) disabled',
 					size: 'auto',
 				},
 			},
@@ -161,8 +161,8 @@ export function UpdatePresets(self: ModuleInstance): void {
 				feedbackId: 'fbkRoutedOut2',
 				options: { input: { isExpression: true, value: '$(local:input)' } },
 				style: {
-					bgcolor: hexToNumber('#FF0000'),
-					color: hexToNumber('#000000'),
+					bgcolor: hexToNumber('#000066'),
+					color: hexToNumber('#FFFFFF'),
 				},
 			},
 			{
@@ -171,7 +171,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 				style: {
 					bgcolor: hexToNumber('#242424'),
 					color: hexToNumber('#B6B6B6'),
-					text: 'Input $(local:input)\nnot connected',
+					text: 'Input $(local:input) not connected',
 					size: 'auto',
 				},
 			},
@@ -181,7 +181,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 				style: {
 					bgcolor: hexToNumber('#242424'),
 					color: hexToNumber('#B6B6B6'),
-					text: 'Output $(local:output)\ndisabled',
+					text: 'Output $(local:output) disabled',
 					size: 'auto',
 				},
 			},
