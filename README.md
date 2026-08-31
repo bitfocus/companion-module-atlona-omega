@@ -9,8 +9,7 @@ See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 ## Active To-Do's
 
 - Define additional feedback for USB Routing, logic, etc
-- Auto-reconnect, auto-status polling
-- Invert VOUTMute1/2 variables to be more consistent with LRAUD Status
+- Auto-reconnect, auto-status polling (or action Result values, perhaps?)
 
 ## Long Term To-Do's
 

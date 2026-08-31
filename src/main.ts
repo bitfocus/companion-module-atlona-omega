@@ -289,6 +289,8 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 			}
 
 			// Get VOUT Mute Status
+			// NOTE: these variables are inverted to be consistent with LRAUD behavior
+			// as the Atlona API returns a boolean for Mute/Unmute rather than On/Off.
 			this.sendCommand('VOUTMute1 sta')
 
 			const queryVOUTMute1 = await this.waitForLine(/^(VOUTMute1 on|VOUTMute1 off)$/i, 3000)
@@ -297,11 +299,11 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 			let varVOUTMute1 = ''
 			let varVOUTMute2 = ''
 			if (replyVOUTMute1 === 'VOUTMute1 on') {
-				varVOUTMute1 = 'on'
-			} else if (replyVOUTMute1 === 'VOUTMute1 off') {
 				varVOUTMute1 = 'off'
+			} else if (replyVOUTMute1 === 'VOUTMute1 off') {
+				varVOUTMute1 = 'on'
 			} else {
-				this.log('warn', `Unexpected VOUTMute1 status response: ${queryVOUTMute1}`)
+				this.log('warn', `Unexpected HDMI audio output response: ${queryVOUTMute1}`)
 			}
 
 			this.sendCommand('VOUTMute2 sta')
@@ -313,7 +315,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 			} else if (replyVOUTMute2 === 'VOUTMute2 off') {
 				varVOUTMute2 = 'off'
 			} else {
-				this.log('warn', `Unexpected VOUTMute2 status response: ${queryVOUTMute2}`)
+				this.log('warn', `Unexpected analog audio output response: ${queryVOUTMute2}`)
 			}
 
 			// Update all Variables
@@ -329,13 +331,13 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 				routeOutput1: `${varRouteOutput1}`,
 				routeOutput2: `${varRouteOutput2}`,
 				statusBlink: `${varBlink}`,
-				statusLRAUD: `${varLRAUD}`,
+				statusAudioOutAnalog: `${varLRAUD}`,
+				statusAudioOutHDMI: `${varVOUTMute1}`,
+				statusAudioOutHDBaseT: `${varVOUTMute2}`,
 				statusUsbHostLogic: `${varUsbLogic}`,
 				statusUsbHostRoute: `${varUsbRoute}`,
 				statusUsbVbusControl: `${varUsbVbus}`,
 				statusPower: `${varPower}`,
-				statusVOUTMute1: `${varVOUTMute1}`,
-				statusVOUTMute2: `${varVOUTMute2}`,
 			})
 			this.log('info', 'Initial status query complete, variables updated.')
 
